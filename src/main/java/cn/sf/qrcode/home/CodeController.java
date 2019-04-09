@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -34,9 +35,9 @@ public class CodeController {
      */
     @PostMapping
     @ResponseBody
-    public HttpState<Map<String, Object>> loginWechat(String alipay, String wx) {
+    public HttpState<Map<String, Object>> loginWechat(@RequestBody Code codeDTO) {
         
-        final Code code = codeService.insert(alipay, wx);
+        final Code code = codeService.insert(codeDTO.getAlipay(), codeDTO.getWx());
         
         Map<String, Object> map = new HashMap<>();
         map.put("codeId", code.getId());
