@@ -1,0 +1,82 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.5.RELEASE'
+		mariadbClientVerion = '1.4.6'
+	}
+	repositories {
+		mavenCentral()
+		jcenter()
+		maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("org.jfrog.buildinfo:build-info-extractor-gradle:4.7.0")
+	}
+}
+
+
+plugins {
+	id "com.eriwen.gradle.css" version "2.14.0"
+	id "com.eriwen.gradle.js" version "2.14.1"
+	id 'net.saliman.cobertura' version '2.5.4'
+}
+
+apply plugin: 'war'
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'maven-publish'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+
+group = 'cn.sf'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+	maven {
+        url 'https://repo.spring.io/libs-milestone'
+    }
+}
+
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+configurations {
+	providedRuntime
+}
+
+
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.web
+		}
+	}
+}
+
+dependencies {
+	
+	// public libs
+	compile('org.springframework.boot:spring-boot-starter-aop')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.apache.shiro:shiro-spring:1.3.2')
+	
+	compile("com.google.code.gson:gson:2.8.0")
+	compile('com.belerweb:pinyin4j:2.5.1')
+	
+	compile('com.github.qcloudsms:qcloudsms:1.0.5')
+	
+	runtime('org.mariadb.jdbc:mariadb-java-client:2.2.6')
+	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+
+
