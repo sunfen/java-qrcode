@@ -35,7 +35,6 @@ public class LoginController {
     @Autowired
     private UserService userService;
     
-    
     private static final String APPID = "wxf61bed124837fca5";
     private static final String SECRET = "ff8413faa5b46230fc4a2ed7d4981a69";
 

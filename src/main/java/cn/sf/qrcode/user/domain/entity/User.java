@@ -1,12 +1,15 @@
  package cn.sf.qrcode.user.domain.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import cn.sf.qrcode.code.domain.entity.Code;
 import cn.sf.qrcode.common.CommonUtil;
 import cn.sf.qrcode.common.domain.entity.AbstractSecureObject;
 import cn.sf.qrcode.common.domain.entity.StringDateConverter;
@@ -41,6 +44,8 @@ public class User extends AbstractSecureObject{
     @Convert(converter = StringDateConverter.class)
     private String createTime;
 
+    @OneToMany(mappedBy = "user")
+    private List<Code> codes;
     
     public User() {
         super();
@@ -94,5 +99,14 @@ public class User extends AbstractSecureObject{
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
+
+    public List<Code> getCodes() {
+        return codes;
+    }
+
+    public void setCodes(List<Code> codes) {
+        this.codes = codes;
+    }
+    
     
 }
