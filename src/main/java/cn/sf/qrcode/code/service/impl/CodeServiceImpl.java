@@ -27,7 +27,7 @@ public class CodeServiceImpl implements CodeService{
      */
     @Override
     @Transactional
-    public Code insert(String alipay, String wx) {
+    public Code insert(String alipay, String wx, String name) {
         
         Code code = new Code();
         
@@ -35,7 +35,7 @@ public class CodeServiceImpl implements CodeService{
 
         code.setWx(wx);
         code.setAlipay(alipay);
-        
+        code.setName(name);
         return repository.save(code);
     }
 

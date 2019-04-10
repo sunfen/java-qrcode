@@ -27,6 +27,8 @@ public class Code extends AbstractSecureObject{
     @Column(length = 256, nullable = false)
     private String wx;
     
+    @Column(length = 32)
+    private String name;
     
     @ManyToOne(targetEntity = User.class)
     private User user;
@@ -34,6 +36,7 @@ public class Code extends AbstractSecureObject{
     @Convert(converter = StringDateConverter.class)
     private String createTime;
 
+    
     
     public Code() {
         super();
@@ -71,6 +74,16 @@ public class Code extends AbstractSecureObject{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
     }
     
     

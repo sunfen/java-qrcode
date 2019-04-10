@@ -27,7 +27,7 @@ public class ShiroConfig {
         //游客，开发权限
         filterChainDefinitionMap.put("/qrcode/login/**", "anon");
         filterChainDefinitionMap.put("/qrcode/login", "anon");
-        filterChainDefinitionMap.put("/qrcode/code/**", "anon");
+        filterChainDefinitionMap.put("/qrcode/scan/**", "anon");
         //用户，需要角色权限 “user”
         //filterChainDefinitionMap.put("/user/**", "roles[user]");
       

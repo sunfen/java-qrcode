@@ -17,5 +17,5 @@ public interface CodeRepository extends JpaRepository<Code, Long>{
      * @param codeId
      * @param openid
      */
-    Code findByIdAndUserOpenid(String codeId, String openid);
+    Code findByIdAndUserOpenid(Long codeId, String openid);
 }
