@@ -1,4 +1,4 @@
- package cn.sf.qrcode.code.repository;
+package cn.sf.qrcode.code.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

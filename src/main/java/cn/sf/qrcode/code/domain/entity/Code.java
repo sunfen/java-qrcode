@@ -1,4 +1,4 @@
- package cn.sf.qrcode.code.domain.entity;
+package cn.sf.qrcode.code.domain.entity;
 
 import java.time.LocalDateTime;
 

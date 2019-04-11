@@ -1,6 +1,8 @@
 package cn.sf.qrcode.home;
 
-import java.net.URI;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,15 +15,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
+import com.alipay.api.response.AlipayTradeWapPayResponse;
+import com.google.gson.Gson;
 
 import cn.sf.qrcode.code.domain.entity.Code;
 import cn.sf.qrcode.code.repository.CodeRepository;
+import cn.sf.qrcode.common.AlipayConfig;
 import cn.sf.qrcode.common.QrCodeUtil;
 
 
@@ -31,10 +35,19 @@ import cn.sf.qrcode.common.QrCodeUtil;
 public class HomeController {
     
     private static Logger log = LoggerFactory.getLogger(HomeController.class);
-    @Autowired
-    private RestTemplate restTemplate;
+    
     @Autowired
     private CodeRepository codeRepository;
+    
+    Gson gson = new Gson();
+    
+    
+    @GetMapping("alipay")
+    public String gateway(HttpServletRequest request,
+        HttpServletResponse response) {
+        return "欢迎你";
+    }
+    
     
     @GetMapping("/{openid}/{codeId}")
     public void scan(
@@ -48,40 +61,50 @@ public class HomeController {
         
         if (agent.indexOf("micromessenger") > 0) {
             
-            QrCodeUtil.encode(code.getName(), "F:\\qrcode.jpg", response.getOutputStream());
+            QrCodeUtil.encode(code.getWx(), code.getName(), response.getOutputStream());
         } else if (agent.indexOf("alipayclient") > 0) {
             
             log.info("阿里支付");
-            URI url = new URI(code.getAlipay());
-            restTemplate.postForLocation(url, request);
+            aliPay(response);
         }else {
-            
-            QrCodeUtil.encode(code.getWx(), code.getName(), response.getOutputStream());
+            aliPay(response);
         }
     }
     
-
+    
+  
     
     
     
-    
-    public String aliPay() throws AlipayApiException {
+    public String aliPay(HttpServletResponse response) throws AlipayApiException, IOException {
         
         AlipayClient alipayClient = new DefaultAlipayClient(
-                "openapi", "appid","rsa_private_key",  "json", "utf-8", "alipay_pub_key");
+            AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY,
+            AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.SIGNTYPE);
         
         AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();// 创建API对应的request
-        alipayRequest.setReturnUrl("http://192.168.1.219:22222/ali.html");
+      
+        alipayRequest.setReturnUrl(AlipayConfig.return_url);
+        alipayRequest.setNotifyUrl(AlipayConfig.notify_url);// 在公共参数中设置回跳和通知地址
         
-        alipayRequest.setNotifyUrl("http://192.168.1.219:22222/callback");// 在公共参数中设置回跳和通知地址
-        
-        alipayRequest.setBizContent("{" + "    \"out_trade_no\":\"20160320020192222\"," + "    \"total_amount\":66.66,"
-                + "    \"subject\":\"主题\"," + "    \"seller_id\":\"213215dsa\"," +
-                // " \"product_code\":\"QUICK_WAP_PAY\"" +
-                "  }");// 填充业务参数
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("out_trade_no", "2019040963865222");
+        String bizContent = gson.toJson(map);
+
+        alipayRequest.setBizContent(bizContent);// 填充业务参数
         
         String form = alipayClient.pageExecute(alipayRequest).getBody(); // 调用SDK生成表单
- 
+        response.setContentType("text/html;charset=UTF-8");
+        response.getWriter().write(form);//直接将完整的表单html输出到页面
+        response.getWriter().flush();
+        AlipayTradeWapPayResponse aliRresponse = alipayClient.execute(alipayRequest);
+        if(aliRresponse.isSuccess()){
+        System.out.println("调用成功");
+        } else {
+        System.out.println("调用失败");
+        }
         return form;
     }
+    
+  
 }

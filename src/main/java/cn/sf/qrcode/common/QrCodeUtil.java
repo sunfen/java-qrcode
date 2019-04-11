@@ -1,4 +1,4 @@
- package cn.sf.qrcode.common;
+package cn.sf.qrcode.common;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -29,7 +29,7 @@ public class QrCodeUtil {
     private static final int BG_HEIGHT = 570;
     private static final int QRCODE_SIZE = 200;
 
-    private static BufferedImage createBg(String content) throws Exception {
+    private static BufferedImage createBg(String name) throws Exception {
         
         BufferedImage image = new BufferedImage(BG_WIDTH, BG_HEIGHT, BufferedImage.TYPE_INT_RGB);   
         Graphics2D g2 = (Graphics2D)image.getGraphics();   
@@ -37,22 +37,23 @@ public class QrCodeUtil {
         g2.clearRect(0, 0, BG_WIDTH, BG_HEIGHT);   
         g2.setPaint(Color.WHITE);
 
-        String title = "长按二维码识别付款";
-        Font font1 = new Font("微软雅黑", Font.BOLD, 25);
+        byte[] title = new String("长按二维码识别付款").getBytes("utf-8");
+        Font font1 = new Font("SimHei", Font.BOLD, 25);
         g2.setFont(font1);
         double x1 = (BG_WIDTH - QRCODE_SIZE) / 2;   
         double y1 = (BG_HEIGHT - QRCODE_SIZE) / 4;  
-        g2.drawString(title, (int)x1, (int)y1);
+        g2.drawString(new String(title), (int)x1, (int)y1);
         
-        Font font = new Font("微软雅黑", Font.PLAIN, 10);
-        if(content == null || content.isEmpty()) {
-            content = "***";
+        Font font = new Font("SimHei", Font.PLAIN, 10);
+        if(name == null || name.isEmpty()) {
+            name = "***";
         } 
-        content = "向 " + content + " 付款";
+        name = "向 " + name + " 付款";
+        byte[] names = new String(name).getBytes("utf-8");
         double x = (BG_WIDTH - QRCODE_SIZE);   
         double y = BG_HEIGHT - (BG_HEIGHT - QRCODE_SIZE) / 3 - 15;
         Graphics2D g3 = (Graphics2D)image.getGraphics();   
-        g3.drawString(content, (int)x, (int)y);   
+        g3.drawString(new String(names), (int)x, (int)y);   
         g3.setFont(font);
         return image;
     }
@@ -62,8 +63,7 @@ public class QrCodeUtil {
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
         hints.put(EncodeHintType.CHARACTER_SET, CHARSET);
         hints.put(EncodeHintType.MARGIN, 2);
-        BitMatrix bitMatrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, QRCODE_SIZE, QRCODE_SIZE,
-                hints);
+        BitMatrix bitMatrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, QRCODE_SIZE, QRCODE_SIZE, hints);
         int width = bitMatrix.getWidth();
         int height = bitMatrix.getHeight();
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
