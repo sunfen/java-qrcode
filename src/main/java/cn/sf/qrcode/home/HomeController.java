@@ -3,6 +3,8 @@ package cn.sf.qrcode.home;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,9 @@ import cn.sf.qrcode.common.QrCodeUtil;
 @ResponseBody
 public class HomeController {
     
+    private Log logger = LogFactory.getLog(HomeController.class);
+    
+    
     @Autowired
     private CodeRepository codeRepository;
     
@@ -32,17 +37,21 @@ public class HomeController {
         HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
         
         final Code code = codeRepository.findByIdAndUserOpenid(codeId, openid);
-
+        
+        if(code == null) {
+            logger.info("code is null : " + codeId);
+            return;
+        }
+        
         String agent = request.getHeader("User-Agent").toLowerCase();
         
         if (agent.indexOf("micromessenger") > 0) {
-            
             QrCodeUtil.encode(code.getWx(), code.getName(), response.getOutputStream());
         } else if (agent.indexOf("alipayclient") > 0) {
             
             response.sendRedirect(code.getAlipay());
         }else {
-            response.sendRedirect(code.getAlipay());
+            logger.info(agent + " : " + code.getId());
         }
     }
   
