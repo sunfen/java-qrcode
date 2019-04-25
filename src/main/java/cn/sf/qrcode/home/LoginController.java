@@ -1,11 +1,8 @@
- package cn.sf.qrcode.home;
+package cn.sf.qrcode.home;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,20 +76,10 @@ public class LoginController {
     
     
     private HttpState<Map<String, Object>> login(UserDTO user){
-        final User entity = userService.insert(user);
+        final User entity = userService.insert(user.getOpenid());
 
-        // 从SecurityUtils里边创建一个 subject
-        Subject subject = SecurityUtils.getSubject();
-        // 在认证提交前准备 token（令牌）
-        UsernamePasswordToken token = new UsernamePasswordToken(entity.getOpenid(), entity.getOpenid());
-    
-        // 执行认证登陆
-        subject.login(token);
         Map<String, Object> map = new HashMap<>();
-        map.put("session", subject.getSession().getId());
         map.put("openid", entity.getOpenid());
-        map.put("avatarUrl", entity.getAvatarUrl());
-        map.put("name", entity.getUsername());
         return HttpState.success(map);
     }
     

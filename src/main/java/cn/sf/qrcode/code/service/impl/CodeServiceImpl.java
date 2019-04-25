@@ -3,6 +3,7 @@ package cn.sf.qrcode.code.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import cn.sf.qrcode.code.domain.entity.Code;
 import cn.sf.qrcode.code.repository.CodeRepository;
@@ -27,11 +28,11 @@ public class CodeServiceImpl implements CodeService{
      */
     @Override
     @Transactional
-    public Code insert(String alipay, String wx, String name) {
-        
+    public Code insert(String alipay, String wx, String name, String openId) {
+        Assert.notNull(openId, "code openId is null");
         Code code = new Code();
         
-        code.setUser(userService.findCurrentUser());
+        code.setUser(userService.insert(openId));
 
         code.setWx(wx);
         code.setAlipay(alipay);

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.sf.qrcode.code.domain.CodeVO;
 import cn.sf.qrcode.code.domain.entity.Code;
 import cn.sf.qrcode.code.service.CodeService;
 import cn.sf.qrcode.common.domain.HttpState;
@@ -35,9 +36,9 @@ public class CodeController {
      */
     @PostMapping
     @ResponseBody
-    public HttpState<Map<String, Object>> loginWechat(@RequestBody Code codeDTO) {
+    public HttpState<Map<String, Object>> loginWechat(@RequestBody CodeVO codeDTO) {
         
-        final Code code = codeService.insert(codeDTO.getAlipay(), codeDTO.getWx(), codeDTO.getName());
+        final Code code = codeService.insert(codeDTO.getAlipay(), codeDTO.getWx(), codeDTO.getName(), codeDTO.getOpenId());
         
         Map<String, Object> map = new HashMap<>();
         map.put("codeId", code.getId());

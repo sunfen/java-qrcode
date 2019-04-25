@@ -10,7 +10,7 @@ public interface CodeService {
      * @param wx
      * @return
      */
-    Code insert(String alipay, String wx, String name);
+    Code insert(String alipay, String wx, String name, String openId);
 
  
 }

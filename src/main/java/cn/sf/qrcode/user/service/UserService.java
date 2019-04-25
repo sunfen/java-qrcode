@@ -1,7 +1,6 @@
 package cn.sf.qrcode.user.service;
 
 import cn.sf.qrcode.user.domain.entity.User;
-import cn.sf.qrcode.user.domain.UserDTO;
 
 public interface UserService {
 
@@ -15,10 +14,6 @@ public interface UserService {
      * @param username
      * @return
      */
-    User insert(UserDTO user);
+    User insert(String openid);
 
-
-	User findCurrentUser();
-
- 
 }
