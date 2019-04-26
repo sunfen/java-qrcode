@@ -39,7 +39,11 @@ public class CodeController {
     @PostMapping
     @ResponseBody
     public HttpState<Map<String, Object>> loginWechat(@RequestBody CodeVO codeDTO) {
-        final Code code = codeService.insert(codeDTO.getAlipay(), codeDTO.getWx(), URLEncoder.encode(codeDTO.getName().trim()), codeDTO.getOpenId());
+        String name = codeDTO.getName();
+        if(name != null && !name.isEmpty()) {
+            name = URLEncoder.encode(name.trim());
+        }
+        final Code code = codeService.insert(codeDTO.getAlipay(), codeDTO.getWx(), name, codeDTO.getOpenId());
         
         Map<String, Object> map = new HashMap<>();
         map.put("codeId", code.getId());

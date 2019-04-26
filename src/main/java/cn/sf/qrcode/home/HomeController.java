@@ -49,7 +49,11 @@ public class HomeController {
         String agent = request.getHeader("User-Agent").toLowerCase();
         
         if (agent.indexOf("micromessenger") > 0) {
-            QrCodeUtil.encode(code.getWx(), URLDecoder.decode(code.getName()), response.getOutputStream());
+            String name = code.getName();
+            if(name != null && !name.isEmpty()) {
+                name = URLDecoder.decode(name);
+            }
+            QrCodeUtil.encode(code.getWx(), name, response.getOutputStream());
         } else if (agent.indexOf("alipayclient") > 0) {
             
             response.sendRedirect(code.getAlipay());
