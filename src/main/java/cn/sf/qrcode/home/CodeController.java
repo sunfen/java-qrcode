@@ -1,5 +1,6 @@
  package cn.sf.qrcode.home;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,11 +35,11 @@ public class CodeController {
      * @param wx
      * @return
      */
+    @SuppressWarnings("deprecation")
     @PostMapping
     @ResponseBody
     public HttpState<Map<String, Object>> loginWechat(@RequestBody CodeVO codeDTO) {
-        
-        final Code code = codeService.insert(codeDTO.getAlipay(), codeDTO.getWx(), codeDTO.getName(), codeDTO.getOpenId());
+        final Code code = codeService.insert(codeDTO.getAlipay(), codeDTO.getWx(), URLEncoder.encode(codeDTO.getName().trim()), codeDTO.getOpenId());
         
         Map<String, Object> map = new HashMap<>();
         map.put("codeId", code.getId());

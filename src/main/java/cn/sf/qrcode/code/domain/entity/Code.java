@@ -27,7 +27,7 @@ public class Code extends AbstractSecureObject{
     @Column(length = 256, nullable = false)
     private String wx;
     
-    @Column(length = 32)
+    @Column(length = 256)
     private String name;
     
     @ManyToOne(targetEntity = User.class)

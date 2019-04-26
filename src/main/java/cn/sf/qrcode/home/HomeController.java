@@ -1,5 +1,7 @@
 package cn.sf.qrcode.home;
 
+import java.net.URLDecoder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,6 +32,7 @@ public class HomeController {
     private CodeRepository codeRepository;
     
     
+    @SuppressWarnings("deprecation")
     @GetMapping("/{openid}/{codeId}")
     public void scan(
         @PathVariable String openid,
@@ -46,7 +49,7 @@ public class HomeController {
         String agent = request.getHeader("User-Agent").toLowerCase();
         
         if (agent.indexOf("micromessenger") > 0) {
-            QrCodeUtil.encode(code.getWx(), code.getName(), response.getOutputStream());
+            QrCodeUtil.encode(code.getWx(), URLDecoder.decode(code.getName()), response.getOutputStream());
         } else if (agent.indexOf("alipayclient") > 0) {
             
             response.sendRedirect(code.getAlipay());

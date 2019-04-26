@@ -24,13 +24,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User insert(final String openId) {
         Assert.notNull(openId, "insert openId is null");
-
+        
         User user = this.findByOpenid(openId);
         
         //insert user
         if(user == null) {
-            Assert.notNull(user, "user is null");
-            
             user = new User();
             
             user.setOpenid(openId);

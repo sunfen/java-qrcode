@@ -22,14 +22,14 @@ import cn.sf.qrcode.common.domain.entity.StringDateConverter;
 @Entity
 public class User extends AbstractSecureObject{
 
-    @Column(length = 64)
+    @Column(length = 256)
     private String username;
     
     
-    @Column(length = 64)
+    @Column(length = 64, nullable = false)
     private String password;
     
-    @Column(length = 32)
+    @Column(length = 32, nullable = false)
     private String openid;
 
     /**
