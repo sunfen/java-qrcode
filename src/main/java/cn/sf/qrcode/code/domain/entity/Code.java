@@ -1,5 +1,6 @@
 package cn.sf.qrcode.code.domain.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -7,6 +8,8 @@ import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.ColumnDefault;
 
 import cn.sf.qrcode.common.CommonUtil;
 import cn.sf.qrcode.common.domain.entity.AbstractSecureObject;
@@ -35,7 +38,14 @@ public class Code extends AbstractSecureObject{
 
     @Convert(converter = StringDateConverter.class)
     private String createTime;
+    
+    @Column(precision = 8, scale = 2)
+    @ColumnDefault("0.00")
+    private BigDecimal weixinTimes;
 
+    @Column(precision = 8, scale = 2)
+    @ColumnDefault("0.00")
+    private BigDecimal alipayTimes;
     
     
     public Code() {
@@ -85,6 +95,27 @@ public class Code extends AbstractSecureObject{
     public void setName(String name) {
         this.name = name;
     }
+
+
+	public BigDecimal getWeixinTimes() {
+		return weixinTimes;
+	}
+
+
+	public void setWeixinTimes(BigDecimal weixinTimes) {
+		this.weixinTimes = weixinTimes;
+	}
+
+
+	public BigDecimal getAlipayTimes() {
+		return alipayTimes;
+	}
+
+
+	public void setAlipayTimes(BigDecimal alipayTimes) {
+		this.alipayTimes = alipayTimes;
+	}
+
     
     
 }

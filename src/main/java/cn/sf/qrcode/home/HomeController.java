@@ -1,5 +1,6 @@
 package cn.sf.qrcode.home;
 
+import java.math.BigDecimal;
 import java.net.URLDecoder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,17 +47,31 @@ public class HomeController {
             return;
         }
         
-        String agent = request.getHeader("User-Agent").toLowerCase();
+        final String agent = request.getHeader("User-Agent").toLowerCase();
         
         if (agent.indexOf("micromessenger") > 0) {
-            String name = code.getName();
+            
+        	String name = code.getName();
             if(name != null && !name.isEmpty()) {
                 name = URLDecoder.decode(name);
             }
+            
+            final BigDecimal times = code.getWeixinTimes().add(new BigDecimal(1));
+            
+            code.setWeixinTimes(times);
+            codeRepository.save(code);
+            
             QrCodeUtil.encode(code.getWx(), name, response.getOutputStream());
+            
         } else if (agent.indexOf("alipayclient") > 0) {
             
+            final BigDecimal times = code.getAlipayTimes().add(new BigDecimal(1));
+            
+            code.setAlipayTimes(times);
+            codeRepository.save(code);
+            
             response.sendRedirect(code.getAlipay());
+            
         }else {
             logger.info(agent + " : " + code.getId());
         }

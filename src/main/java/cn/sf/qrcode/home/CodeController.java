@@ -1,4 +1,4 @@
- package cn.sf.qrcode.home;
+package cn.sf.qrcode.home;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -28,7 +28,6 @@ public class CodeController {
     @Autowired
     private CodeService codeService;
     
-    
     /**
      * 
      * @param alipay
@@ -40,9 +39,11 @@ public class CodeController {
     @ResponseBody
     public HttpState<Map<String, Object>> loginWechat(@RequestBody CodeVO codeDTO) {
         String name = codeDTO.getName();
+        
         if(name != null && !name.isEmpty()) {
             name = URLEncoder.encode(name.trim());
         }
+        
         final Code code = codeService.insert(codeDTO.getAlipay(), codeDTO.getWx(), name, codeDTO.getOpenId());
         
         Map<String, Object> map = new HashMap<>();

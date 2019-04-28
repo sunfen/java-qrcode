@@ -15,9 +15,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 
-import cn.sf.qrcode.user.domain.entity.User;
 import cn.sf.qrcode.common.domain.HttpState;
 import cn.sf.qrcode.user.domain.UserDTO;
+import cn.sf.qrcode.user.domain.entity.User;
 import cn.sf.qrcode.user.service.UserService;
 
 /**
