@@ -55,19 +55,25 @@ public class HomeController {
             if(name != null && !name.isEmpty()) {
                 name = URLDecoder.decode(name);
             }
+            BigDecimal time = code.getWeixinTimes();
+            if(time == null) {
+            	time = new BigDecimal(0);
+            }
+            time = time.add(new BigDecimal(1));
             
-            final BigDecimal times = code.getWeixinTimes().add(new BigDecimal(1));
-            
-            code.setWeixinTimes(times);
+            code.setWeixinTimes(time);
             codeRepository.save(code);
             
             QrCodeUtil.encode(code.getWx(), name, response.getOutputStream());
             
         } else if (agent.indexOf("alipayclient") > 0) {
             
-            final BigDecimal times = code.getAlipayTimes().add(new BigDecimal(1));
-            
-            code.setAlipayTimes(times);
+            BigDecimal time = code.getAlipayTimes();
+            if(time == null) {
+            	time = new BigDecimal(0);
+            }
+            time = time.add(new BigDecimal(1));
+            code.setAlipayTimes(time);
             codeRepository.save(code);
             
             response.sendRedirect(code.getAlipay());
