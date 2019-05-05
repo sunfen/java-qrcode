@@ -20,7 +20,7 @@ import cn.sf.qrcode.user.service.UserService;
 
 
 @Controller
-@RequestMapping("/document")
+@RequestMapping("/qrcode/document")
 public class DocumentController {
 
 	@Autowired
