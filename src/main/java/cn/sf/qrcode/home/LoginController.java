@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -40,10 +41,17 @@ public class LoginController {
 
     
     @GetMapping("session/{code}")
-    public HttpState<Map<String, Object>> getAccessToken(@PathVariable String code) throws Exception {
-    
+    public HttpState<Map<String, Object>> getAccessToken(@PathVariable String code,
+    		@RequestParam(required = false) String appid, @RequestParam(required = false) String secret) throws Exception {
+    	if( appid == null || appid.isEmpty()) {
+    		appid = APPID;
+    	}
+    	if( secret == null || secret.isEmpty()) {
+    		secret = SECRET;
+    	}
         String accessTokenResult = 
-            restTemplate.getForObject(String.format("https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&js_code=%s&appid=%s&secret=%s", code, APPID, SECRET), String.class);
+            restTemplate.getForObject(String.format("https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&js_code=%s&appid=%s&secret=%s", 
+            		code, appid, secret), String.class);
        
         Gson gson = new Gson();
         @SuppressWarnings("unchecked")

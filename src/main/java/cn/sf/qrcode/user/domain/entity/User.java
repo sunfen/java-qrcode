@@ -29,7 +29,7 @@ public class User extends AbstractSecureObject{
     @Column(length = 64, nullable = false)
     private String password;
     
-    @Column(length = 32, nullable = false)
+    @Column(length = 32, nullable = false, unique = true)
     private String openid;
 
     /**
