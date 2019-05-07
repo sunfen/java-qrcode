@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,18 +35,21 @@ public class LoginController {
     private static final String APPID = "wxf61bed124837fca5";
     private static final String SECRET = "ff8413faa5b46230fc4a2ed7d4981a69";
 
+    private static final String APPID1 = "wxb7cb00126e90e1db";
+    private static final String SECRET1 = "9e183418f7a8dac4b6a384cef4e89519";
+
     @Autowired
     private RestTemplate restTemplate;
 
     
-    @GetMapping("session/{code}")
-    public HttpState<Map<String, Object>> getAccessToken(@PathVariable String code,
-    		@RequestParam(required = false) String appid, @RequestParam(required = false) String secret) throws Exception {
-    	if( appid == null || appid.isEmpty()) {
-    		appid = APPID;
-    	}
-    	if( secret == null || secret.isEmpty()) {
-    		secret = SECRET;
+    @GetMapping("session/{code}/{index}")
+    public HttpState<Map<String, Object>> getAccessToken(@PathVariable String code,@PathVariable String index) throws Exception {
+    	String appid = APPID;
+    	String secret = SECRET;
+    	
+    	if( index.equals("1")) {
+    		appid = APPID1;
+    		secret = SECRET1;
     	}
         String accessTokenResult = 
             restTemplate.getForObject(String.format("https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&js_code=%s&appid=%s&secret=%s", 
