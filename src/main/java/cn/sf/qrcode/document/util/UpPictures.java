@@ -177,7 +177,7 @@ public class UpPictures {
 		}
 		// 判断文件大小
 		//大于1M
-		if (fileSize >= 1048576) {
+		if (fileSize >= 10485760) {
 			return false;
 		}
 		return true;
