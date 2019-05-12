@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>扫一扫</title>
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+</head>
+<body>
+	<style type="text/css">
+	body{
+		display:flex;
+		flex-direction:column;
+		justify-content:center;
+		text-align:center;
+	    background:#5c93f0;
+		font-size: 58px;
+		font-weight: 600;
+		color:#fff;
+	}
+	</style>
+  <div th:if="${data.isShowAlipay}">
+  
+    <p>向 {{data.name ? data.name : '****'}} 付款</p>
+	<img id=""img  style="height:380px;width:380px" th:src="@{'/qrcode/webview/image?url=' + ${data.alipay}}" >
+  </div>
+  
+    <div th:if="${data.isShowPerson}">
+  
+    <p>加我为好友</p>
+	<img id="img" style="height:380px;width:380px" th:src="@{'/qrcode/webview/image?url=' + ${data.person}}" >
+  </div>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript">
+	
+	$.ajax({
+		url: "http://192.168.1.108:8083/qrcode/webview/token",
+		type: 'post',
+		dataType: 'json',
+		contentType: "application/json;charset=utf-8",
+		data: {htmlUrl : location.href.split('#')[0]},
+		success: function(data) {
+		//	debugger
+			if(data && data.appid) {
+				wx.config({
+					debug:true,
+					appId: data.appid,
+					timestamp: data.timestamp,
+					nonceStr: data.noncestr,
+					signature: data.signature,
+					jsApiList: [
+						  "previewImage"
+					]
+				});
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			alert(data.htmlUrl);
+			if(textStatus == "timeout") {
+				showToast.showToastFail("连接超时，请检查网络");
+			} else {
+				showToast.showToastFail("加载失败，请稍后再试");
+			}
+		}
+	});
+ 
+	wx.ready(function() {
+		$("#img").click(function(){
+			var url = "https://app.ka.com/"+$(this).attr("src");
+			wx.previewImage({
+				current: url, // 当前显示图片的http链接
+				urls: [url] // 需要预览的图片http链接列表
+			});
+		});	
+	});
+ 
+	wx.error(function(res) {
+		showToast.showToastFail('初始化失败！');
+	});
+</script>
+</body>
+</html>
