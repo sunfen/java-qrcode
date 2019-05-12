@@ -58,7 +58,7 @@ public class QrCodeUtil {
         return image;
     }
     
-    private static BufferedImage createQrcode(String url) throws Exception {
+    public static BufferedImage createQrcode(String url) throws Exception {
         Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
         hints.put(EncodeHintType.CHARACTER_SET, CHARSET);
