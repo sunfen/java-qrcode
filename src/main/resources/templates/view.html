@@ -21,7 +21,7 @@
   <div th:if="${data.isShowAlipay}">
   
     <p>向 {{data.name ? data.name : '****'}} 付款</p>
-	<img id=""img  style="height:380px;width:380px" th:src="@{'/qrcode/webview/image?url=' + ${data.alipay}}" >
+	<img id="img"  style="height:380px;width:380px" th:src="@{'/qrcode/webview/image?url=' + ${data.alipay}}" >
   </div>
   
     <div th:if="${data.isShowPerson}">
@@ -31,13 +31,11 @@
   </div>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script type="text/javascript">
-	
+	alert(location.href.split('#')[0]);
 	$.ajax({
-		url: "http://192.168.1.108:8083/qrcode/webview/token",
-		type: 'post',
+		url: "/qrcode/webview/token?htmlUrl=" + encodeURIComponent(location.href.split('#')[0]),
+		type: 'get',
 		dataType: 'json',
-		contentType: "application/json;charset=utf-8",
-		data: {htmlUrl : location.href.split('#')[0]},
 		success: function(data) {
 		//	debugger
 			if(data && data.appid) {
@@ -65,7 +63,7 @@
  
 	wx.ready(function() {
 		$("#img").click(function(){
-			var url = "https://app.ka.com/"+$(this).attr("src");
+			var url = $(this).attr("src");
 			wx.previewImage({
 				current: url, // 当前显示图片的http链接
 				urls: [url] // 需要预览的图片http链接列表

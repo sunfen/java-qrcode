@@ -14,8 +14,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -114,12 +112,12 @@ public class JsController {
 	
 	
 	
-	 @PostMapping("token")
+	 @GetMapping("token")
 	 @ResponseBody
 	 @SuppressWarnings("unchecked")
-	 public WxSignatureVO getAccessToken(@RequestBody String htmlUrl) throws Exception {
+	 public WxSignatureVO getAccessToken(@RequestParam String htmlUrl) throws Exception {
 		 		
-		String token =null;//  (String)redisTemplate.opsForValue().get(TOKEN_KEY);
+		String token =  (String)redisTemplate.opsForValue().get(TOKEN_KEY);
 		 if(token == null) {
 			 
 			 String accessTokenResult = 
@@ -129,12 +127,12 @@ public class JsController {
 			 
 			 if(result != null && result.get("access_token") != null) {
 				 token = result.get("access_token");
-				// redisTemplate.opsForValue().set(TOKEN_KEY,token, 7200, TimeUnit.SECONDS);
+				 redisTemplate.opsForValue().set(TOKEN_KEY,token, 7200, TimeUnit.SECONDS);
 				
 			 }
 		 }
 		 
-		 String ticket = null;//(String)redisTemplate.opsForValue().get(TICKET_KEY);
+		 String ticket = (String)redisTemplate.opsForValue().get(TICKET_KEY);
 	     if(ticket == null) {
 			 String accessTokenResult = 
 					 restTemplate.getForObject(
@@ -144,7 +142,7 @@ public class JsController {
 			 
 			 if(result != null && result.get("ticket") != null) {
 				 ticket = result.get("ticket");
-				// redisTemplate.opsForValue().set(TICKET_KEY,ticket, 7200, TimeUnit.SECONDS);
+				 redisTemplate.opsForValue().set(TICKET_KEY,ticket, 7200, TimeUnit.SECONDS);
 				
 			 }
 	     }
