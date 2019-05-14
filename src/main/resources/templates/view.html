@@ -22,64 +22,12 @@
 	}
   </style>
   
-  <div th:if="${data.isShowAlipay}" style="height:700px;width:700px">
+  <div th:if="${data}">
   
-    <p>向 {{data.name ? data.name : '****'}} 付款</p>
-	<img id="img" style="height:380px;width:380px" th:src="@{'/qrcode/webview/image?url=' + ${data.alipay}}" >
-  </div>
-  <div th:if="${data.isShowPerson}" style="height:700px;width:700px">
-  
-    <p>加我为好友</p>
-	<img id="img" style="height:380px;width:380px" th:src="@{'/qrcode/webview/image?url=' + ${data.person}}" >
+    <p>长按二维码识别</p>
+    <p th:text="'向' + ${name == null ? name : '****'} + '付款'"></p>
+	<img id="img" style="height:400px;width:400px" th:src="@{'/qrcode/scan/image/' + ${type} + '?codeId=' + ${data}}" >
   </div>
 
-
-<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
-<script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
-
-<script type="text/javascript">
-
-	$.ajax({
-		url: "/qrcode/webview/token?htmlUrl=" + encodeURIComponent(location.href.split('#')[0]),
-		type: 'get',
-		dataType: 'json',
-		success: function(data) {
-		//	debugger
-			if(data && data.appid) {
-				wx.config({
-					appId: data.appid,
-					timestamp: data.timestamp,
-					nonceStr: data.noncestr,
-					signature: data.signature,
-					jsApiList: [
-						  "previewImage"
-					]
-				});
-			}
-		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			if(textStatus == "timeout") {
-				alert("连接超时，请检查网络");
-			} else {
-				alert("加载失败，请稍后再试");
-			}
-		}
-	});
- 
-	wx.ready(function() {
-		console.log(window.__wxjs_environment === 'miniprogram') // true
-	 	$(document).on('click', '#img',function(event) {
-				var curImageSrc = location.origin + $(this).attr('src');
-				wx.previewImage({
-					current: curImageSrc,
-					urls: [curImageSrc]
-				});
-		})
-	});
- 
-	wx.error(function(res) {
-		alert('初始化失败！');
-	});
-</script>
 </body>
 </html>
