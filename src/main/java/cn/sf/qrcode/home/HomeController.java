@@ -78,7 +78,7 @@ public class HomeController {
             
             response.sendRedirect(code.getAlipay());
             
-        } else if (agent.indexOf("mqqbrowser") > 0) {
+        } else if (agent.indexOf("qq") > 0) {
         	
         	BigDecimal time = code.getQqTimes();
         	if(time == null) {
@@ -89,7 +89,7 @@ public class HomeController {
         	codeRepository.save(code);
         	if(code.getQq() != null && !code.getQq().isEmpty()) {
         		
-        		response.sendRedirect(code.getQq());
+        		QrCodeUtil.encode(code.getQq(), code.getName(), response.getOutputStream());
         	}
         	
         }else {
