@@ -78,6 +78,20 @@ public class HomeController {
             
             response.sendRedirect(code.getAlipay());
             
+        } else if (agent.indexOf("mqqbrowser") > 0) {
+        	
+        	BigDecimal time = code.getQqTimes();
+        	if(time == null) {
+        		time = new BigDecimal(0);
+        	}
+        	time = time.add(new BigDecimal(1));
+        	code.setQqTimes(time);
+        	codeRepository.save(code);
+        	if(code.getQq() != null && !code.getQq().isEmpty()) {
+        		
+        		response.sendRedirect(code.getQq());
+        	}
+        	
         }else {
             logger.info(agent + " : " + code.getId());
         }

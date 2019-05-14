@@ -29,6 +29,9 @@ public class Code extends AbstractSecureObject{
     
     @Column(length = 256, nullable = false)
     private String wx;
+
+    @Column(length = 512)
+    private String qq;
     
     @Column(length = 256)
     private String name;
@@ -46,6 +49,10 @@ public class Code extends AbstractSecureObject{
     @Column(precision = 8, scale = 2)
     @ColumnDefault("0.00")
     private BigDecimal alipayTimes;
+
+    @Column(precision = 8, scale = 2)
+    @ColumnDefault("0.00")
+    private BigDecimal qqTimes;
     
     
     public Code() {
@@ -114,6 +121,26 @@ public class Code extends AbstractSecureObject{
 
 	public void setAlipayTimes(BigDecimal alipayTimes) {
 		this.alipayTimes = alipayTimes;
+	}
+
+
+	public String getQq() {
+		return qq;
+	}
+
+
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
+
+
+	public BigDecimal getQqTimes() {
+		return qqTimes;
+	}
+
+
+	public void setQqTimes(BigDecimal qqTimes) {
+		this.qqTimes = qqTimes;
 	}
 
     

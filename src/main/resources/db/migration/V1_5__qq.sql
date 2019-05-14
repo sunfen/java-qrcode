@@ -1,0 +1,3 @@
+ALTER TABLE `codes`
+	ADD COLUMN `qq` VARCHAR(512) NULL AFTER `weixin_times`,
+	ADD COLUMN `qq_times` DECIMAL(8,2) NULL DEFAULT '0.00' AFTER `qq`;

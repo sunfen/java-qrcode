@@ -44,7 +44,7 @@ public class CodeController {
             name = URLEncoder.encode(name.trim());
         }
         
-        final Code code = codeService.insert(codeDTO.getAlipay(), codeDTO.getWx(), name, codeDTO.getOpenId());
+        final Code code = codeService.insert(codeDTO.getAlipay(), codeDTO.getWx(), name, codeDTO.getOpenId(), codeDTO.getQq());
         
         Map<String, Object> map = new HashMap<>();
         map.put("codeId", code.getId());

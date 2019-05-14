@@ -28,12 +28,12 @@ public class CodeServiceImpl implements CodeService{
      */
     @Override
     @Transactional
-    public Code insert(String alipay, String wx, String name, String openId) {
+    public Code insert(String alipay, String wx, String name, String openId, String qq) {
         Assert.notNull(openId, "code openId is null");
         Code code = new Code();
         
         code.setUser(userService.insert(openId));
-
+        code.setQq(qq);
         code.setWx(wx);
         code.setAlipay(alipay);
         code.setName(name);

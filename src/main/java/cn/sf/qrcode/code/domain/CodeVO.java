@@ -9,6 +9,8 @@ public class CodeVO {
     private String alipay;
     
     private String wx;
+
+    private String qq;
     
     private String name;
     
@@ -52,6 +54,15 @@ public class CodeVO {
     public void setOpenId(String openId) {
         this.openId = openId;
     }
+
+	public String getQq() {
+		return qq;
+	}
+
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
+    
     
     
 }
