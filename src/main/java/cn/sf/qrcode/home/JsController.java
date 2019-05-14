@@ -23,8 +23,8 @@ import com.google.gson.Gson;
 
 import cn.sf.qrcode.common.QrCodeUtil;
 import cn.sf.qrcode.common.WeChatUtils;
-import cn.sf.qrcode.webview.domain.ViewVO;
-import cn.sf.qrcode.webview.domain.WxSignatureVO;
+import cn.sf.qrcode.manage.domain.ViewVO;
+import cn.sf.qrcode.manage.domain.WxSignatureVO;
 
 
 /**

@@ -62,7 +62,7 @@ public class QrCodeUtil {
         Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
         hints.put(EncodeHintType.CHARACTER_SET, CHARSET);
-        hints.put(EncodeHintType.MARGIN, 2);
+        hints.put(EncodeHintType.MARGIN, 20);
         BitMatrix bitMatrix = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, QRCODE_SIZE, QRCODE_SIZE, hints);
         int width = bitMatrix.getWidth();
         int height = bitMatrix.getHeight();

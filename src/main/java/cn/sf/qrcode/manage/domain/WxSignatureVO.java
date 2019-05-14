@@ -1,4 +1,4 @@
-package cn.sf.qrcode.webview.domain;
+package cn.sf.qrcode.manage.domain;
 
 public class WxSignatureVO{
 
