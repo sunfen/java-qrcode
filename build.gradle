@@ -74,8 +74,6 @@ dependencies {
     compile('com.google.zxing:javase:3.2.1')
 	compile("com.google.code.gson:gson:2.8.0")
 	
-	compile('org.springframework.boot:spring-boot-starter-data-redis')
-	compile('org.springframework.boot:spring-boot-starter-cache')
 	
 	runtime('org.mariadb.jdbc:mariadb-java-client:2.2.6')
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')

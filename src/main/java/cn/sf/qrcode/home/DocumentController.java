@@ -3,10 +3,14 @@ package cn.sf.qrcode.home;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,5 +48,28 @@ public class DocumentController {
         }
         return HttpState.success(map);
 	}
+	
+	
+	@GetMapping("{openid}")
+	@ResponseBody
+	public List<DocumentVO> getAll(@PathVariable("openid") String openid) throws IOException {
+		User user = userService.findByOpenid(openid);
+		if(user == null) {
+			return null;
+		}
+		
+		return documentService.allDocumentByObjectId(user.getId());
+	}
 
+	
+	@DeleteMapping("{objectId}")
+	@ResponseBody
+	public void getAll(@PathVariable("objectId") Long objectId) throws IOException {
+		
+		if(objectId == null) {
+			return;
+		}
+		
+		documentService.deleteDocumentById(objectId);
+	}
 }
