@@ -121,20 +121,16 @@ public class DocumentServiceImpl implements DocumentService {
 
 
     public void deleteDoucumentByPath(String pathStr, String minPathStr) {
-        final Path path = Paths.get(this.fahterPath);
+        
+    	final Path path = Paths.get(this.fahterPath);
         final Set<String> attrViews = path.getFileSystem().supportedFileAttributeViews();
 
         if (pathStr != null && !pathStr.isEmpty()) {
             try {
                 if (!attrViews.contains("posix")) {
-                        Files.deleteIfExists(Paths.get(pathStr.replace("file:///", "")));
-       
-                    if (pathStr != null && !pathStr.isEmpty()) {
-                        Files.deleteIfExists(Paths.get(pathStr.replace("file:///", "")));
-                    }
+                	Files.deleteIfExists(Paths.get(pathStr.replace("file:///", "")));
                 } else {
-                    Files.deleteIfExists(Paths.get(minPathStr.replace("file://", "")));
-                    if (minPathStr != null && !minPathStr.isEmpty()) {
+                	if (minPathStr != null && !minPathStr.isEmpty()) {
                         Files.deleteIfExists(Paths.get(minPathStr.replace("file://", "")));
                     }
                 }
@@ -172,6 +168,11 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     @Transactional
     public void deleteDocumentById(Long id) {
+    	if(id == null) {
+    		return;
+    	}
+    	final Document doc = documentRepository.getOne(id);
+    	this.deleteDoucumentByPath(doc.getPathName(), doc.getMinPath());
         documentRepository.deleteById(id);
     }
 
