@@ -1,6 +1,8 @@
 package cn.sf.qrcode.code.repository;
 
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import cn.sf.qrcode.code.domain.entity.Code;
@@ -18,4 +20,10 @@ public interface CodeRepository extends JpaRepository<Code, Long>{
      * @param openid
      */
     Code findByIdAndUserOpenid(Long codeId, String openid);
+    /**
+     * @param codeId
+     * @param openid
+     */
+    List<Code> findByUserOpenid(String openid);
+    
 }

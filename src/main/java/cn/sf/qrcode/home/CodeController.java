@@ -1,11 +1,16 @@
 package cn.sf.qrcode.home;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,4 +56,27 @@ public class CodeController {
 
         return HttpState.success(map);
     }
+    
+    
+	@GetMapping("{openid}")
+	@ResponseBody
+	public List<CodeVO> getAll(@PathVariable("openid") String openid) throws IOException {
+		if(openid == null) {
+			return null;
+		}
+		
+		return codeService.findAllByOpenid(openid);
+	}
+
+	
+	@DeleteMapping("{id}")
+	@ResponseBody
+	public void getAll(@PathVariable("id") Long id) throws IOException {
+		
+		if(id == null) {
+			return;
+		}
+		
+		codeService.deletedById(id);
+	}
 }

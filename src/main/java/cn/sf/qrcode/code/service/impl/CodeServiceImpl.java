@@ -1,10 +1,14 @@
 package cn.sf.qrcode.code.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import cn.sf.qrcode.code.domain.CodeVO;
 import cn.sf.qrcode.code.domain.entity.Code;
 import cn.sf.qrcode.code.repository.CodeRepository;
 import cn.sf.qrcode.code.service.CodeService;
@@ -40,4 +44,35 @@ public class CodeServiceImpl implements CodeService{
         return repository.save(code);
     }
 
+	@Override
+	public List<CodeVO> findAllByOpenid(String openid) {
+		Assert.notNull(openid, "code openId is null");
+		final List<Code> list = repository.findByUserOpenid(openid);
+		
+		List<CodeVO> results = new ArrayList<>();
+		
+		for(Code entity : list) {
+			
+			CodeVO vo = new CodeVO();
+		
+			vo.setAlipayTimes(entity.getAlipayTimes());
+			vo.setCreateTime(entity.getCreateTime());
+			vo.setWeixinTimes(entity.getWeixinTimes());
+			vo.setQqTimes(entity.getQqTimes());
+			vo.setId(entity.getId());
+			results.add(vo);
+		}
+		return results;
+	}
+
+	@Override
+	@Transactional
+	public void deletedById(Long id) {
+		Assert.notNull(id, "id is null");
+		repository.deleteById(id);
+		
+	}
+
+	
+	
 }
