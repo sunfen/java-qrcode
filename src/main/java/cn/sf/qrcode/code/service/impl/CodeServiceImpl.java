@@ -60,6 +60,7 @@ public class CodeServiceImpl implements CodeService{
 			vo.setWeixinTimes(entity.getWeixinTimes());
 			vo.setQqTimes(entity.getQqTimes());
 			vo.setId(entity.getId());
+			vo.setName(entity.getName());
 			results.add(vo);
 		}
 		return results;
