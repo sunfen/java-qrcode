@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
@@ -29,17 +30,16 @@ public class MultipleCodeController {
     
     private Log logger = LogFactory.getLog(HomeController.class);
     
-    
     @Autowired
     private MultipleCodeRepository codeRepository;
     
     @GetMapping("/{userId}")
     @ResponseBody
     public void scan(
-    		@PathVariable Long userId, HttpServletResponse response) throws Exception {
+    		@PathVariable Long userId, 
+    		HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
     	final List<MultipleCode> codes = codeRepository.findByUserId(userId);
-         
          
     	if(codes == null || codes.isEmpty()) {
         
@@ -51,11 +51,19 @@ public class MultipleCodeController {
     	Random random = new Random();
     	
     	final int index = random.nextInt(length);
-    	final MultipleCode code = codes.get(index);
+    	
+    	MultipleCode code = codes.get(index);
     	
     	if(code == null || code.getUrl() == null) {
     		return;
     	}
+    	   
+    	final String agent = request.getHeader("User-Agent").toLowerCase();
+    	if (agent.indexOf("micromessenger") > 0) {
+            if(code.getUrl().matches("https://qr.alipay.com")) {
+            	code = codes.get(random.nextInt(length));
+            }
+        }
     	
         BigDecimal time = code.getTimes();
         if(time == null) {
@@ -63,7 +71,6 @@ public class MultipleCodeController {
         }
         time = time.add(new BigDecimal(1));
     	code.setTimes(time);
-    	
     	
     	response.sendRedirect(code.getUrl());
     }

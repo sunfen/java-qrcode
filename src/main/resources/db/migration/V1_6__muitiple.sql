@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `multiple_codes`;
 CREATE TABLE `multiple_codes` (
   `id` bigint(20) NOT NULL,
   `url` varchar(512) NOT NULL,
-  `qq_times` DECIMAL(8,2) NULL DEFAULT '0.00',
+  `times` DECIMAL(8,2) NULL DEFAULT '0.00',
   `create_time` datetime(6) DEFAULT NULL,
   `user_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
