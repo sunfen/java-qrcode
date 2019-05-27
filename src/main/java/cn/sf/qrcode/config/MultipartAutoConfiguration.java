@@ -21,12 +21,10 @@ import org.springframework.web.servlet.DispatcherServlet;
 @ConditionalOnProperty(prefix = "spring.http.multipart", name = "enabled", matchIfMissing = true)
 @EnableConfigurationProperties(MultipartProperties.class)
 public class MultipartAutoConfiguration {
-    @Autowired
+  
+	@Autowired
     private MultipartProperties multipartProperties;
 
-//    public MultipartAutoConfiguration(MultipartProperties multipartProperties) {
-//        this.multipartProperties = multipartProperties;
-//    }
 
     @Bean
     @ConditionalOnMissingBean
