@@ -172,6 +172,9 @@ public class DocumentServiceImpl implements DocumentService {
     		return;
     	}
     	final Document doc = documentRepository.getOne(id);
+     	if(doc == null) {
+    		return;
+    	}
     	this.deleteDoucumentByPath(doc.getPathName(), doc.getMinPath());
         documentRepository.deleteById(id);
     }
