@@ -5,6 +5,7 @@ package cn.sf.qrcode.home;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -20,10 +21,10 @@ public class MapController {
 
     
 
-    @GetMapping("view")
-    public String view( Model model) throws Exception {
-    	
-    
+    @GetMapping("view/{lat}/{lng}")
+    public String view( Model model, @PathVariable Double lat, @PathVariable Double lng ) throws Exception {
+    	model.addAttribute("lat", lat);
+    	model.addAttribute("lng", lng);
     	return "map";
     }
     
