@@ -5,8 +5,6 @@ import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 
 /**
  * http 工具类
@@ -56,11 +54,11 @@ public class HttpUtil {
         // 建立实际的连接
         connection.connect();
         // 获取所有响应头字段
-        Map<String, List<String>> headers = connection.getHeaderFields();
+        //Map<String, List<String>> headers = connection.getHeaderFields();
         // 遍历所有的响应头字段
-        for (String key : headers.keySet()) {
+       /* for (String key : headers.keySet()) {
             System.err.println(key + "--->" + headers.get(key));
-        }
+        }*/
         // 定义 BufferedReader输入流来读取URL的响应
         BufferedReader in = null;
         in = new BufferedReader(
@@ -71,7 +69,7 @@ public class HttpUtil {
             result += getLine;
         }
         in.close();
-        System.err.println("result:" + result);
+       // System.err.println("result:" + result);
         return result;
     }
 }
