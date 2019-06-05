@@ -48,28 +48,28 @@ public class IdentifyController {
 		    	res = client.advancedGeneral(imgData, options);
 		    	break;
 		    case "dish":
-		    	res = client.advancedGeneral(imgData, options);
+		    	res = client.dishDetect(imgData, options);
 				break;
 		    case "car":
-		    	res = client.advancedGeneral(imgData, options);
+		    	res = client.carDetect(imgData, options);
 		    	break;
 		    case "logo":
-		    	res = client.advancedGeneral(imgData, options);
+		    	res = client.logoSearch(imgData, options);
 		    	break;
 		    case "animal":
-		    	res = client.advancedGeneral(imgData, options);
+		    	res = client.animalDetect(imgData, options);
 		    	break;
 		    	//植物
 		    case "plant":
-		    	res = client.advancedGeneral(imgData, options);
+		    	res = client.plantDetect(imgData, options);
 		    	break;
 		    	//图像主体	
 		    case "object":
-		    	res = client.advancedGeneral(imgData, options);
+		    	res = client.objectDetect(imgData, options);
 		    	break;
 		    	//地标
 		    case "land":
-		    	res = client.advancedGeneral(imgData, options);
+		    	res = client.landmark(imgData, options);
 		    	break;
 		    default:
 				break;
