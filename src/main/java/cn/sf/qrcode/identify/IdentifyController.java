@@ -2,7 +2,9 @@ package cn.sf.qrcode.identify;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.baidu.aip.imageclassify.AipImageClassify;
+
 
 @Controller
 @RequestMapping("/qrcode/identify")
@@ -20,20 +24,67 @@ public class IdentifyController {
 	private static String access_token = "identify_access_token";
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-    
 	
+    private static String APP_ID = "16432049";
+	private static String API_KEY = "ofdrWFzN22Yp9ZwBd9HQY4AN";
+	private static String SECRET_KEY = "K6RQnEHnF628HTXSYnkP64wZA32QqRy1";
+	
+    AipImageClassify client = new AipImageClassify(APP_ID, API_KEY, SECRET_KEY);
+    
 	@PostMapping("/{type}")
 	@ResponseBody
 	public String identify(MultipartFile files, @PathVariable String type) throws IOException {
-		String accessToken = redisTemplate.opsForValue().get(access_token);
+		 // 传入可选参数调用接口
+	    HashMap<String, String> options = new HashMap<String, String>();
+	    options.put("baike_num", "5");
+	    
+		// 参数为二进制数组
+		final byte[] imgData = files.getBytes();
+		
+	    JSONObject res = null;
+		switch (type) {
+	    	//通用物体
+		    case "common":
+		    	res = client.advancedGeneral(imgData, options);
+		    	break;
+		    case "dish":
+		    	res = client.advancedGeneral(imgData, options);
+				break;
+		    case "car":
+		    	res = client.advancedGeneral(imgData, options);
+		    	break;
+		    case "logo":
+		    	res = client.advancedGeneral(imgData, options);
+		    	break;
+		    case "animal":
+		    	res = client.advancedGeneral(imgData, options);
+		    	break;
+		    	//植物
+		    case "plant":
+		    	res = client.advancedGeneral(imgData, options);
+		    	break;
+		    	//图像主体	
+		    case "object":
+		    	res = client.advancedGeneral(imgData, options);
+		    	break;
+		    	//地标
+		    case "land":
+		    	res = client.advancedGeneral(imgData, options);
+		    	break;
+		    default:
+				break;
+		}
+	    if(res != null) {
+	    	return res.toString();
+	    }
+	    
+	    String accessToken = redisTemplate.opsForValue().get(access_token);
 		if(accessToken == null || accessToken.isEmpty() ) {
 			accessToken = AuthService.getAuth();
 			redisTemplate.opsForValue().set(access_token, accessToken);
 		}
-	    
-        try {
-        	// 参数为二进制数组
-        	final byte[] imgData = files.getBytes();
+        
+		try {
         	final String imgStr = Base64Util.encode(imgData);
         	final String imgParam = URLEncoder.encode(imgStr, "UTF-8");
         	final String param = "image=" + imgParam;
@@ -56,30 +107,6 @@ public class IdentifyController {
 	    String url = null;
 	   
 	    switch (type) {
-	    	//通用物体
-		    case "common":
-		    	url = "https://aip.baidubce.com/rest/2.0/image-classify/v2/advanced_general";
-		    	break;
-	
-		    case "dish":
-		    	url = "https://aip.baidubce.com/rest/2.0/image-classify/v2/dish";
-				break;
-
-		    case "car":
-		    	url = "https://aip.baidubce.com/rest/2.0/image-classify/v1/car";
-		    	break;
-		    	
-		    case "logo":
-		    	url = "https://aip.baidubce.com/rest/2.0/image-classify/v2/logo";
-		    	break;
-		    	
-		    case "animal":
-		    	url = "https://aip.baidubce.com/rest/2.0/image-classify/v1/animal";
-		    	break;
-		    	//植物
-		    case "plant":
-		    	url = "https://aip.baidubce.com/rest/2.0/image-classify/v1/plant";
-		    	break;
 		    	//花卉
 		    case "flower":
 		    	url = "https://aip.baidubce.com/rest/2.0/image-classify/v1/flower";
@@ -88,12 +115,6 @@ public class IdentifyController {
 		    case "ingredient":
 		    	url = "https://aip.baidubce.com/rest/2.0/image-classify/v1/classify/ingredient";
 		    	break;
-		    
-		    	//图像主体	
-		    case "object":
-		    	url = "https://aip.baidubce.com/rest/2.0/image-classify/v1/object_detect";
-		    	break;
-		    
 		    	//地标
 		    case "land":
 		    	url = "https://aip.baidubce.com/rest/2.0/image-classify/v1/landmark";
