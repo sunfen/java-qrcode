@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.baidu.aip.imageclassify.AipImageClassify;
+import com.baidu.aip.ocr.AipOcr;
 
 
 @Controller
@@ -30,6 +31,8 @@ public class IdentifyController {
 	private static String SECRET_KEY = "K6RQnEHnF628HTXSYnkP64wZA32QqRy1";
 	
     AipImageClassify client = new AipImageClassify(APP_ID, API_KEY, SECRET_KEY);
+    AipOcr aipOcr = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+    
     
 	@PostMapping("/{type}")
 	@ResponseBody
@@ -40,7 +43,7 @@ public class IdentifyController {
 	    
 		// 参数为二进制数组
 		final byte[] imgData = files.getBytes();
-		
+		System.err.println(imgData);
 	    JSONObject res = null;
 		switch (type) {
 	    	//通用物体
@@ -71,19 +74,24 @@ public class IdentifyController {
 		    case "land":
 		    	res = client.landmark(imgData, options);
 		    	break;
+		    	//地标
+		    case "text":
+		    	res = aipOcr.basicAccurateGeneral(imgData, options);
+		    	break;
 		    default:
 				break;
 		}
+		System.err.println(res);
 	    if(res != null) {
 	    	return res.toString();
 	    }
-	    
+		System.err.println(1);
 	    String accessToken = redisTemplate.opsForValue().get(access_token);
 		if(accessToken == null || accessToken.isEmpty() ) {
 			accessToken = AuthService.getAuth();
 			redisTemplate.opsForValue().set(access_token, accessToken);
 		}
-        
+		System.err.println(accessToken);
 		try {
         	final String imgStr = Base64Util.encode(imgData);
         	final String imgParam = URLEncoder.encode(imgStr, "UTF-8");
@@ -91,12 +99,12 @@ public class IdentifyController {
         	//final String param1 = "baike_num=" + 5;
         	final String url = this.getUrl(type);
         	
+        	System.err.println(url);
             return HttpUtil.post(url, accessToken, param);
         
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
         return null;
 
 	}
