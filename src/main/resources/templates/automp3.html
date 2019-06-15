@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <title>欢迎使用</title>
+    <script th:src="@{/webjars/jquery/3.0.0/jquery.js}"></script>
+	<style type="text/css">
+	body{
+		display:flex;
+		flex-direction:column;
+		justify-content:center;
+		text-align:center;
+	    background:#5c93f0;
+		font-size: 28px;
+		font-weight: 600;
+		color:#fff;
+		height: 100%
+	}
+	div{
+		height: 100%;
+		margin-top : 100px;
+	}
+  </style>
+  
+  <div>
+  	<audio controls  autoplay id="play1"  hidden="true">
+		<source src="/mp3/2019-06-15.mp3" type="audio/mpeg">
+		您的浏览器不支持 audio 元素。
+	</audio>
+  	
+    <p>欢迎使用云南嶙沃化肥有限公司《红嶙》正规产品</p>
+    <p>请放心使用</p>
+  </div>
+<script type="text/javascript">
+
+//var play1 = document.getElementById("play1");
+
+//play1.play();
+
+</script>
+</body>
+</html>
