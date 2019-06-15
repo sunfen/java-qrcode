@@ -28,5 +28,14 @@ public class MapController {
     	return "map";
     }
     
+    
+    
+
+    @GetMapping("view/auto/mp3")
+    public String view( Model model) throws Exception {
+    	
+    	return "automp3";
+    }
+    
   
 }
