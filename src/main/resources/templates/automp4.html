@@ -1,0 +1,41 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <title>欢迎观看</title>
+	<style type="text/css">
+	body{
+		display:flex;
+		flex-direction:column;
+		justify-content:center;
+		text-align:center;
+	    background:#5c93f0;
+		font-size: 28px;
+		font-weight: 600;
+		color:#fff;
+		height: 100%
+	}
+	div{
+		height: 100%;
+		margin-top : 100px;
+	}
+  </style>
+  
+  
+  <!-- type 1 观看视频      2 查看次数 -->
+  <div th:if="${type == 1}">
+	<video autoplay="autoplay" width="320" height="240" controls="controls">
+	  <source  th:src="${'/mp4/' + url}" type="video/mp4" />
+	</video>
+  </div>
+  
+  <div th:if="${type == 2}">
+	<p>该视频已经被扫描观看</p>
+	<p th:text="${times + '次'}"></p>
+  </div>
+</body>
+</html>

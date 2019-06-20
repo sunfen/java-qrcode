@@ -10,7 +10,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import cn.sf.qrcode.code.domain.entity.Code;
-import cn.sf.qrcode.codes.domain.entity.MultipleCode;
 import cn.sf.qrcode.common.CommonUtil;
 import cn.sf.qrcode.common.domain.entity.AbstractSecureObject;
 import cn.sf.qrcode.common.domain.entity.StringDateConverter;
@@ -47,8 +46,6 @@ public class User extends AbstractSecureObject{
     @OneToMany(mappedBy = "user")
     private List<Code> codes;
     
-    @OneToMany(mappedBy = "user")
-    private List<MultipleCode> multipleCodes;
     
     public User() {
         super();

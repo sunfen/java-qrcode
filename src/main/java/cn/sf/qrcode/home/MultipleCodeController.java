@@ -1,8 +1,6 @@
 package cn.sf.qrcode.home;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,10 +9,10 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.sf.qrcode.codes.domain.entity.MultipleCode;
 import cn.sf.qrcode.codes.repository.MultipleCodeRepository;
@@ -24,7 +22,6 @@ import cn.sf.qrcode.codes.repository.MultipleCodeRepository;
  * @date 2019/04/09
  */
 @Controller
-@ResponseBody
 @RequestMapping("/qrcode/multiple/scan")
 public class MultipleCodeController {
     
@@ -33,45 +30,35 @@ public class MultipleCodeController {
     @Autowired
     private MultipleCodeRepository codeRepository;
     
-    @GetMapping("/{userId}")
-    @ResponseBody
-    public void scan(
+    @GetMapping("/{userId}/{type}")
+    public String scan(
+    		Model model,
     		@PathVariable Long userId, 
+    		@PathVariable Integer type,
     		HttpServletRequest request, HttpServletResponse response) throws Exception {
     	
-    	final List<MultipleCode> codes = codeRepository.findByUserId(userId);
+    	final MultipleCode code = codeRepository.getOne(userId);
          
-    	if(codes == null || codes.isEmpty()) {
+    	if(code == null ) {
         
-    		logger.info("code is null : " + userId);
-            return ;
+    		logger.info("multiple code is null : " + userId);
     	}
-        
-    	final int length = codes.size();
-    	Random random = new Random();
     	
-    	final int index = random.nextInt(length);
-    	
-    	MultipleCode code = codes.get(index);
-    	
-    	if(code == null || code.getUrl() == null) {
-    		return;
+    	//type 1 观看视频      2 查看次数
+    	if(type  == 1) {
+    		BigDecimal time = code.getTimes();
+    		if(time == null) {
+    			time = new BigDecimal(0);
+    		}
+    		time = time.add(new BigDecimal(1));
+    		code.setTimes(time);
+    		codeRepository.save(code);
     	}
-    	   
-    	final String agent = request.getHeader("User-Agent").toLowerCase();
-    	if (agent.indexOf("micromessenger") > 0) {
-            if(code.getUrl().matches("https://qr.alipay.com")) {
-            	code = codes.get(random.nextInt(length));
-            }
-        }
     	
-        BigDecimal time = code.getTimes();
-        if(time == null) {
-        	time = new BigDecimal(0);
-        }
-        time = time.add(new BigDecimal(1));
-    	code.setTimes(time);
+    	model.addAttribute("url", code.getUrl());
     	
-    	response.sendRedirect(code.getUrl());
+    	model.addAttribute("times", code.getTimes() == null ? 0 : code.getTimes().intValue());
+    	model.addAttribute("type", type);
+    	return "automp4";
     }
 }
