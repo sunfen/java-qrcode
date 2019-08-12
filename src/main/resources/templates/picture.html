@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title th:text="${title}"></title>
+<meta name="viewport" content="width=640,target-densitydpi=device-dpi,user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection"content="telephone=no, email=no" />
+</head>
+<body>
+	<style type="text/css">
+	body{
+		display:flex;
+		flex-direction:column;
+		justify-content:center;
+		text-align:center;
+	    background:#5c93f0;
+		font-size: 58px;
+		font-weight: 600;
+		color:#fff;
+	}
+  </style>
+  
+  <div th:if="${src}">
+  
+    <img id="img" th:src="@{${src}}" >
+  </div>
+
+</body>
+</html>
