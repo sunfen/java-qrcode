@@ -1,5 +1,6 @@
 package cn.sf.qrcode.code.service.impl;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,11 @@ public class CodeServiceImpl implements CodeService{
 			vo.setWeixinTimes(entity.getWeixinTimes());
 			vo.setQqTimes(entity.getQqTimes());
 			vo.setId(entity.getId());
-			vo.setName(entity.getName());
+			String name = entity.getName();
+            if(name != null && !name.isEmpty()) {
+                name = URLDecoder.decode(name);
+            }
+			vo.setName(name);
 			results.add(vo);
 		}
 		return results;
