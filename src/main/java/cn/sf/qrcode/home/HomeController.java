@@ -82,7 +82,7 @@ public class HomeController {
         }
         
         final String agent = request.getHeader("User-Agent").toLowerCase();
-        
+
         if (agent.indexOf("micromessenger") > 0) {
             
         	String name = code.getName();
@@ -98,7 +98,7 @@ public class HomeController {
             code.setWeixinTimes(time);
             codeRepository.save(code);
             if(code.getWx() != null && !code.getWx().isEmpty()) {
-        		response.sendRedirect("/qrcode/scan/view/wx?url=" + code.getId() + "&name=" + code.getName());
+        		response.sendRedirect("/qrcode/scan/view/wx?url=" + code.getId() + "&name=" + name);
         	}
         } else if (agent.indexOf("alipayclient") > 0) {
             
@@ -113,7 +113,10 @@ public class HomeController {
             response.sendRedirect(code.getAlipay());
             
         } else if (agent.indexOf("qq") > 0) {
-        	
+        	String name = code.getName();
+            if(name != null && !name.isEmpty()) {
+                name = URLDecoder.decode(name);
+            }
         	BigDecimal time = code.getQqTimes();
         	if(time == null) {
         		time = new BigDecimal(0);
@@ -122,7 +125,7 @@ public class HomeController {
         	code.setQqTimes(time);
         	codeRepository.save(code);
         	if(code.getQq() != null && !code.getQq().isEmpty()) {
-        		response.sendRedirect("/qrcode/scan/view/qq?url=" + code.getId() + "&name=" + code.getName());
+        		response.sendRedirect("/qrcode/scan/view/qq?url=" + code.getId() + "&name=" + name);
         	}
         }else {
             logger.info(agent + " : " + code.getId());
